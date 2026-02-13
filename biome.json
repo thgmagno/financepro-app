@@ -27,6 +27,11 @@
       "react": "recommended"
     }
   },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded"
+    }
+  },
   "assist": {
     "actions": {
       "source": {
