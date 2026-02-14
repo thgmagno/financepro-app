@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { fetchJson } from "@/lib/utils"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -120,10 +121,7 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
-      await fetch("/api/auth/request/register", {
-        method: "POST",
-        body: JSON.stringify({ email }),
-      })
+      await fetchJson("/api/auth/request/register", formRegister)
 
       setEmail(normalized)
 
@@ -155,10 +153,8 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
-      await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify({ ...formRegister }),
-      })
+      await fetchJson("/api/auth/register", formRegister)
+
       toast.success("Registered successfully.")
 
       clearPersistedState()
