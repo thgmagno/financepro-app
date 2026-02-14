@@ -11,6 +11,7 @@ export async function POST(req: Request) {
       headers: {
         "content-type": "application/json",
         accept: "application/json",
+        "x-internal-bff": config.environment.BFF_SHARED_SECRET,
       },
       body: JSON.stringify(body),
     },
