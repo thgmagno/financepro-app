@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { fetchJson } from "@/lib/utils"
+import { http } from "@/lib/utils"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -121,7 +121,10 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
-      await fetchJson("/api/auth/request/register", formRegister)
+      await http("/api/auth/request/register", {
+        method: "POST",
+        body: { email: normalized },
+      })
 
       setEmail(normalized)
 
@@ -153,7 +156,7 @@ export function RegisterForm() {
 
     setIsLoading(true)
     try {
-      await fetchJson("/api/auth/register", formRegister)
+      await http("/api/auth/register", { method: "POST", body: formRegister })
 
       toast.success("Registered successfully.")
 

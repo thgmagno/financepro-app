@@ -1,38 +1,56 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+type ClientOptions<TBody = unknown> = {
+  method?: HttpMethod
+  body?: TBody
+  params?: Record<string, string | number | boolean | undefined>
+  headers?: HeadersInit
+  signal?: AbortSignal
+  credentials?: RequestCredentials
 }
 
-export async function fetchJson<T = unknown>(
-  url: string,
-  body?: unknown,
-  init?: RequestInit,
-) {
+function buildUrl(path: string, params?: ClientOptions["params"]) {
+  const url = new URL(path, window.location.origin)
+  if (params) {
+    for (const [k, v] of Object.entries(params)) {
+      if (v === undefined) continue
+      url.searchParams.set(k, String(v))
+    }
+  }
+  return url.toString()
+}
+
+export async function http<TResp = unknown, TBody = unknown>(
+  path: string,
+  opts: ClientOptions<TBody> = {},
+): Promise<TResp> {
+  const url = buildUrl(path, opts.params)
+
+  const hasBody = opts.body !== undefined && opts.method !== "GET"
   const res = await fetch(url, {
-    method: body ? "POST" : "GET",
-    ...init,
+    method: opts.method ?? "GET",
     headers: {
-      "Content-Type": "application/json",
       Accept: "application/json",
-      ...(init?.headers ?? {}),
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
+      ...opts.headers,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: hasBody ? JSON.stringify(opts.body) : undefined,
+    signal: opts.signal,
+    credentials: opts.credentials ?? "same-origin",
   })
 
   const ct = res.headers.get("content-type") || ""
   const data = ct.includes("application/json")
     ? await res.json().catch(() => null)
-    : await res.text()
+    : await res.text().catch(() => "")
 
   if (!res.ok) {
-    const message =
-      typeof data === "object" && data && "message" in data
+    const msg =
+      data && typeof data === "object" && "message" in (data as any)
         ? String((data as any).message)
         : `HTTP ${res.status}`
-    throw new Error(message)
+    throw new Error(msg)
   }
 
-  return data as T
+  return data as TResp
 }
