@@ -4,6 +4,7 @@ import {
 } from "@/components/forms/auth/ChangePasswordForm"
 import { ChangePasswordSchema } from "@/components/forms/auth/ChangePasswordSchema"
 import { Page } from "@/components/layout/Page"
+import { Suspense } from "@/components/layout/Suspense"
 import { config } from "@/config"
 import { redirect } from "next/navigation"
 import z from "zod"
@@ -62,7 +63,9 @@ async function changePasswordAction(
 export default function ChangePassword() {
   return (
     <Page centered>
-      <ChangePasswordForm changePasswordAction={changePasswordAction} />
+      <Suspense>
+        <ChangePasswordForm changePasswordAction={changePasswordAction} />
+      </Suspense>
     </Page>
   )
 }

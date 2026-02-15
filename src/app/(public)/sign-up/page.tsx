@@ -4,6 +4,7 @@ import {
 } from "@/components/forms/auth/SignUpForm"
 import { SignUpSchema } from "@/components/forms/auth/SignUpSchema"
 import { Page } from "@/components/layout/Page"
+import { Suspense } from "@/components/layout/Suspense"
 import { config } from "@/config"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
@@ -69,7 +70,9 @@ async function signUpAction(
 export default function SignUp() {
   return (
     <Page centered>
-      <SignUpForm signUpAction={signUpAction} />
+      <Suspense>
+        <SignUpForm signUpAction={signUpAction} />
+      </Suspense>
     </Page>
   )
 }
