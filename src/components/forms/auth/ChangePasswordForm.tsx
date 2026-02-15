@@ -20,7 +20,8 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
+import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
 import { ChangePasswordSchema } from "./ChangePasswordSchema"
@@ -93,6 +94,12 @@ export function ChangePasswordForm({
     formState.errors.newPasswordConfirmation
   const confirmationCodeErrors =
     clientErrors.confirmationCode ?? formState.errors.confirmationCode
+
+  useEffect(() => {
+    if (formState.errors._form) {
+      toast.error(formState.errors._form)
+    }
+  }, [formState])
 
   return (
     <Card className="w-full max-w-md">

@@ -23,7 +23,7 @@ async function requestSignUpAction(
   }
 
   try {
-    await fetch(config.routes.requestRegister, {
+    const res = await fetch(config.routes.requestRegister, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -31,6 +31,12 @@ async function requestSignUpAction(
       },
       body: JSON.stringify({ email: parsed.data.email }),
     })
+
+    const r = await res.json()
+
+    if (!res.ok) {
+      return { errors: { _form: r.message } }
+    }
   } catch {
     return {
       errors: { _form: "Failed to fetch" },

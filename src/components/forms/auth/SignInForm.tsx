@@ -19,7 +19,8 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
+import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
 import { SignInSchema } from "./SignInSchema"
@@ -78,6 +79,12 @@ export function SignInForm({ signInAction }: SignInFormProps) {
 
   const emailErrors = clientErrors.email ?? formState.errors.email
   const passwordErrors = clientErrors.password ?? formState.errors.password
+
+  useEffect(() => {
+    if (formState.errors._form) {
+      toast.error(formState.errors._form)
+    }
+  }, [formState])
 
   return (
     <Card className="w-full max-w-md">

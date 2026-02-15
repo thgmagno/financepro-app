@@ -20,7 +20,8 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useActionState, useState } from "react"
+import { useActionState, useEffect, useState } from "react"
+import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
 import { SignUpSchema } from "./SignUpSchema"
@@ -93,6 +94,12 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
   const passwordErrors = clientErrors.password ?? formState.errors.password
   const passwordConfirmationErrors =
     clientErrors.passwordConfirmation ?? formState.errors.passwordConfirmation
+
+  useEffect(() => {
+    if (formState.errors._form) {
+      toast.error(formState.errors._form)
+    }
+  }, [formState])
 
   return (
     <Card className="w-full max-w-md">

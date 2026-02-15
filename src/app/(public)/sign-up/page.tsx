@@ -47,12 +47,15 @@ async function signUpAction(
       }),
     })
 
-    if (res.ok) {
-      const r = await res.json()
-      if (r.data?.accessToken) {
-        const cookieStore = await cookies()
-        cookieStore.set(config.accessTokenName, r.data.accessToken)
-      }
+    const r = await res.json()
+
+    if (!res.ok) {
+      return { errors: { _form: r.message } }
+    }
+
+    if (r.data?.accessToken) {
+      const cookieStore = await cookies()
+      cookieStore.set(config.accessTokenName, r.data.accessToken)
     }
   } catch {
     return {

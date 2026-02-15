@@ -4,6 +4,7 @@ import {
 } from "@/components/forms/auth/ChangePasswordForm"
 import { ChangePasswordSchema } from "@/components/forms/auth/ChangePasswordSchema"
 import { Page } from "@/components/layout/Page"
+import { config } from "@/config"
 import { redirect } from "next/navigation"
 import z from "zod"
 
@@ -26,6 +27,32 @@ async function changePasswordAction(
           tree?.properties?.newPasswordConfirmation?.errors,
         confirmationCode: tree?.properties?.confirmationCode?.errors,
       },
+    }
+  }
+
+  try {
+    const res = await fetch(config.routes.changePassword, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: parsed.data.email,
+        confirmationCode: parsed.data.confirmationCode,
+        newPassword: parsed.data.newPassword,
+        newPasswordConfirmation: parsed.data.newPasswordConfirmation,
+      }),
+    })
+
+    const r = await res.json()
+
+    if (!res.ok) {
+      return { errors: { _form: r.message } }
+    }
+  } catch {
+    return {
+      errors: { _form: "Failed to fetch" },
     }
   }
 
