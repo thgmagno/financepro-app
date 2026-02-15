@@ -9,4 +9,5 @@ const environment = schema.parse(process.env)
 
 export const config = {
   environment,
+  accessTokenName: "finance-pro-access-token",
 }
