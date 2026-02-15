@@ -18,11 +18,11 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Loader } from "lucide-react"
 import Link from "next/link"
 import { useActionState, useState } from "react"
 import z from "zod"
-import { SignInFormSchema } from "./SignInFormSchema"
+import { FormSubmitButton } from "../FormSubmitButton"
+import { SignInSchema } from "./SignInSchema"
 
 export interface SignInFormState {
   errors: {
@@ -59,7 +59,7 @@ export function SignInForm({ signInAction }: SignInFormProps) {
 
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     const formData = new FormData(e.currentTarget)
-    const parsed = SignInFormSchema.safeParse(Object.fromEntries(formData))
+    const parsed = SignInSchema.safeParse(Object.fromEntries(formData))
 
     if (!parsed.success) {
       e.preventDefault()
@@ -139,15 +139,20 @@ export function SignInForm({ signInAction }: SignInFormProps) {
                   aria-invalid={!!passwordErrors}
                 />
                 <FieldError>{passwordErrors}</FieldError>
+                <div className="flex items-center justify-end">
+                  <Link
+                    href="/request/change-password"
+                    className={buttonVariants({ variant: "link", size: "sm" })}
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
               </Field>
             </FieldGroup>
           </FieldSet>
         </CardContent>
         <CardFooter>
-          <Button type="submit" disabled={isPending}>
-            {isPending && <Loader className="animate-spin" />}
-            Login
-          </Button>
+          <FormSubmitButton label="Login" isPending={isPending} />
         </CardFooter>
       </form>
     </Card>

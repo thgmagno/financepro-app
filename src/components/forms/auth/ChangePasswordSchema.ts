@@ -2,7 +2,7 @@ import { z } from "zod"
 
 const MAX_255 = 255
 
-export const SignUpFormSchema = z
+export const ChangePasswordSchema = z
   .object({
     email: z
       .email({
@@ -10,19 +10,14 @@ export const SignUpFormSchema = z
       })
       .max(MAX_255, { error: "Email must be 255 characters or less." }),
 
-    name: z
-      .string()
-      .min(1, { error: "Enter your name." })
-      .max(MAX_255, { error: "Name must be 255 characters or less." }),
-
-    password: z
+    newPassword: z
       .string()
       .min(8, { error: "Password must be at least 8 characters." })
       .max(MAX_255, {
         error: "Password must be 255 characters or less.",
       }),
 
-    passwordConfirmation: z
+    newPasswordConfirmation: z
       .string()
       .min(1, { error: "Confirm your password." })
       .max(MAX_255, {
@@ -33,11 +28,11 @@ export const SignUpFormSchema = z
       .string()
       .length(6, { error: "Confirmation code must be 6 characters." }),
   })
-  .superRefine(({ password, passwordConfirmation }, ctx) => {
-    if (password !== passwordConfirmation) {
+  .superRefine(({ newPassword, newPasswordConfirmation }, ctx) => {
+    if (newPassword !== newPasswordConfirmation) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        path: ["passwordConfirmation"],
+        path: ["newPasswordConfirmation"],
         message: "Passwords do not match.",
       })
     }

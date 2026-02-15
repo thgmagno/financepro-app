@@ -2,7 +2,7 @@ import {
   SignUpForm,
   type SignUpFormState,
 } from "@/components/forms/auth/SignUpForm"
-import { SignUpFormSchema } from "@/components/forms/auth/SignUpFormSchema"
+import { SignUpSchema } from "@/components/forms/auth/SignUpSchema"
 import { Page } from "@/components/layout/Page"
 import { redirect } from "next/navigation"
 import z from "zod"
@@ -13,7 +13,7 @@ async function signUpAction(
 ): Promise<SignUpFormState> {
   "use server"
 
-  const parsed = SignUpFormSchema.safeParse(Object.fromEntries(formData))
+  const parsed = SignUpSchema.safeParse(Object.fromEntries(formData))
 
   if (!parsed.success) {
     const tree = z.treeifyError(parsed.error)

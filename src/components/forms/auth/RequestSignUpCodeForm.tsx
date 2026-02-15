@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -17,10 +17,10 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Loader } from "lucide-react"
 import Link from "next/link"
 import { useActionState, useState } from "react"
 import z from "zod"
+import { FormSubmitButton } from "../FormSubmitButton"
 import { RequestSignUpFormSchema } from "./RequestSignUpCodeSchema"
 
 export interface RequestSignUpCodeFormState {
@@ -43,6 +43,7 @@ export function RequestSignUpCodeForm({
   const [formState, action, isPending] = useActionState(requestSignUpAction, {
     errors: {},
   })
+
   const [clientErrors, setClientErrors] = useState<{ email?: string[] }>({})
 
   const [email, setEmail] = useState("")
@@ -102,10 +103,7 @@ export function RequestSignUpCodeForm({
           >
             Cancel
           </Link>
-          <Button type="submit" disabled={isPending}>
-            {isPending && <Loader className="animate-spin" />}
-            Send
-          </Button>
+          <FormSubmitButton label="Continue" isPending={isPending} />
         </CardFooter>
       </form>
     </Card>

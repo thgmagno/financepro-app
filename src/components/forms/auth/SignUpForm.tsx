@@ -18,12 +18,12 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Loader } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useActionState, useState } from "react"
 import z from "zod"
-import { SignUpFormSchema } from "./SignUpFormSchema"
+import { FormSubmitButton } from "../FormSubmitButton"
+import { SignUpSchema } from "./SignUpSchema"
 
 export interface SignUpFormState {
   errors: {
@@ -66,8 +66,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
 
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     const formData = new FormData(e.currentTarget)
-    console.log(formData.get("email"))
-    const parsed = SignUpFormSchema.safeParse(Object.fromEntries(formData))
+    const parsed = SignUpSchema.safeParse(Object.fromEntries(formData))
 
     if (!parsed.success) {
       e.preventDefault()
@@ -220,10 +219,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
           >
             Cancel
           </Link>
-          <Button type="submit" disabled={isPending}>
-            {isPending && <Loader className="animate-spin" />}
-            Register
-          </Button>
+          <FormSubmitButton label="Register" isPending={isPending} />
         </CardFooter>
       </form>
     </Card>
