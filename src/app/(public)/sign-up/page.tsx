@@ -32,23 +32,20 @@ async function signUpAction(
   }
 
   try {
-    const res = await fetch(
-      `${config.environment.BASE_API_URL}/auth/register`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: parsed.data.email,
-          confirmationCode: parsed.data.confirmationCode,
-          name: parsed.data.name,
-          password: parsed.data.password,
-          passwordConfirmation: parsed.data.passwordConfirmation,
-        }),
+    const res = await fetch(config.routes.register, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-    )
+      body: JSON.stringify({
+        email: parsed.data.email,
+        confirmationCode: parsed.data.confirmationCode,
+        name: parsed.data.name,
+        password: parsed.data.password,
+        passwordConfirmation: parsed.data.passwordConfirmation,
+      }),
+    })
 
     if (res.ok) {
       const r = await res.json()

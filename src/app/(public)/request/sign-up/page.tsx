@@ -23,7 +23,7 @@ async function requestSignUpAction(
   }
 
   try {
-    await fetch(`${config.environment.BASE_API_URL}/auth/request/register`, {
+    await fetch(config.routes.requestRegister, {
       method: "POST",
       headers: {
         Accept: "application/json",

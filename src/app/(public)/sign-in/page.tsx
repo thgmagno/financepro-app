@@ -4,6 +4,8 @@ import {
 } from "@/components/forms/auth/SignInForm"
 import { SignInSchema } from "@/components/forms/auth/SignInSchema"
 import { Page } from "@/components/layout/Page"
+import { config } from "@/config"
+import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import z from "zod"
 
@@ -23,6 +25,32 @@ async function signInAction(
         email: tree?.properties?.email?.errors,
         password: tree?.properties?.password?.errors,
       },
+    }
+  }
+
+  try {
+    const res = await fetch(config.routes.login, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: parsed.data.email,
+        password: parsed.data.password,
+      }),
+    })
+
+    if (res.ok) {
+      const r = await res.json()
+      if (r.data?.accessToken) {
+        const cookieStore = await cookies()
+        cookieStore.set(config.accessTokenName, r.data.accessToken)
+      }
+    }
+  } catch {
+    return {
+      errors: { _form: "Failed to fetch" },
     }
   }
 
