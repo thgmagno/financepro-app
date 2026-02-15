@@ -3,7 +3,7 @@ import { Page } from "@/components/layout/Page"
 
 export default function SignUp() {
   return (
-    <Page alignContent="center">
+    <Page centered>
       <SignUpForm />
     </Page>
   )

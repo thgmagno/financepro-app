@@ -3,7 +3,7 @@ import { Page } from "@/components/layout/Page"
 
 export default function RequestChangePassword() {
   return (
-    <Page alignContent="center">
+    <Page centered>
       <RequestChangePasswordCodeForm />
     </Page>
   )
