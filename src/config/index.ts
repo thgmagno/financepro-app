@@ -2,10 +2,17 @@ import z from "zod"
 
 const schema = z.object({
   BASE_API_URL: z.url(),
-  BFF_SHARED_SECRET: z.string(),
 })
 
 const environment = schema.parse(process.env)
+
+const publicRoutes = [
+  "/sign-in",
+  "/sign-up",
+  "/change-password",
+  "/request/change-password",
+  "/request/sign-up",
+]
 
 const routes = {
   // AUTH
@@ -45,4 +52,5 @@ export const config = {
   environment,
   accessTokenName: "finance-pro-access-token",
   routes,
+  publicRoutes,
 }
