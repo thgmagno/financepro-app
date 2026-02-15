@@ -51,7 +51,8 @@ async function signInAction(
       const cookieStore = await cookies()
       cookieStore.set(config.accessTokenName, r.data.accessToken)
     }
-  } catch {
+  } catch (ex) {
+    console.log(ex)
     return {
       errors: { _form: "Failed to fetch" },
     }
