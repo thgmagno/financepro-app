@@ -87,6 +87,7 @@ export function RequestSignUpCodeForm({
                   name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder="m@example.com"
                   aria-invalid={!!emailErrors}
                 />
                 <FieldError>{emailErrors}</FieldError>

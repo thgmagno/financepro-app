@@ -47,6 +47,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
   const [formState, action, isPending] = useActionState(signUpAction, {
     errors: {},
   })
+
   const [clientErrors, setClientErrors] = useState<{
     email?: string[]
     confirmationCode?: string[]
@@ -55,8 +56,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
     passwordConfirmation?: string[]
   }>({})
 
-  const email = useSearchParams().get("email") ?? ""
-
+  const [email, setEmail] = useState(useSearchParams().get("email") ?? "")
   const [confirmationCode, setConfirmationCode] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
@@ -66,6 +66,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
 
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     const formData = new FormData(e.currentTarget)
+    console.log(formData.get("email"))
     const parsed = SignUpFormSchema.safeParse(Object.fromEntries(formData))
 
     if (!parsed.success) {
@@ -112,9 +113,11 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   name="email"
-                  defaultValue={email}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   aria-invalid={!!emailErrors}
-                  disabled
+                  placeholder="m@example.com"
+                  readOnly
                 />
                 <FieldError>{emailErrors}</FieldError>
               </Field>
@@ -128,13 +131,11 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 <FieldLabel htmlFor="confirmationCode">
                   Verification code
                 </FieldLabel>
-                <FieldDescription>
-                  You will receive a code to complete the registration.
-                </FieldDescription>
                 <Input
                   name="confirmationCode"
                   value={confirmationCode}
                   onChange={(e) => setConfirmationCode(e.target.value)}
+                  placeholder="XXXXXX"
                   aria-invalid={!!confirmationCodeErrors}
                   className="uppercase"
                 />
@@ -152,6 +153,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name"
                   aria-invalid={!!nameErrors}
                 />
                 <FieldError>{nameErrors}</FieldError>
@@ -183,6 +185,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   type={passwordVisible ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Your secure password"
                   aria-invalid={!!passwordErrors}
                 />
                 <FieldError>{passwordErrors}</FieldError>
@@ -202,6 +205,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   type={passwordVisible ? "text" : "password"}
                   value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
+                  placeholder="Confirm your password"
                   aria-invalid={!!passwordConfirmationErrors}
                 />
                 <FieldError>{passwordConfirmationErrors}</FieldError>
@@ -218,7 +222,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
           </Link>
           <Button type="submit" disabled={isPending}>
             {isPending && <Loader className="animate-spin" />}
-            Send
+            Register
           </Button>
         </CardFooter>
       </form>
