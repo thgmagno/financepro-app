@@ -1,9 +1,10 @@
-import { RegisterForm } from "@/components/auth/RegisterForm"
+import { SignUpForm } from "@/components/forms/auth/SignUpForm"
+import { Page } from "@/components/layout/PageContent"
 
 export default function SignUp() {
   return (
-    <div className="flex items-center justify-center min-h-dvh px-4 py-12">
-      <RegisterForm />
-    </div>
+    <Page alignContent="center">
+      <SignUpForm />
+    </Page>
   )
 }
