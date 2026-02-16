@@ -6,6 +6,10 @@ export const TransactionScope = ["PRIVATE", "GROUP"] as const
 
 export type TransactionScopeType = (typeof TransactionScope)[number]
 
+export const TransactionStatus = ["COMPLETED", "PENDING"] as const
+
+export type TransactionStatusType = (typeof TransactionStatus)[number]
+
 export const SharePolicy = [
   "NONE",
   "ALL",

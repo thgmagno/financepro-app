@@ -1,6 +1,8 @@
 import { getTransactions } from "@/actions/transaction"
 import { Page } from "@/components/layout/Page"
-import { TransactionsFilters } from "./TransactionsFilters"
+import { TransactionsFilters } from "@/components/transactions/TransactionsFilters"
+import { TransactionsTable } from "@/components/transactions/TransactionsTable"
+import { columns } from "./columns"
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
@@ -37,8 +39,7 @@ export default async function Transactions(props: {
   return (
     <Page>
       <TransactionsFilters />
-
-      <div className="mt-6">{/* <TransactionsTable /> */}</div>
+      <TransactionsTable columns={columns} data={data} />
     </Page>
   )
 }

@@ -27,7 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Transaction, TransactionScope } from "@/types"
+import { Transaction, TransactionScope, TransactionStatus } from "@/types"
 import clsx from "clsx"
 
 function asStringArray(e: unknown): string[] {
@@ -39,6 +39,7 @@ function asStringArray(e: unknown): string[] {
 type FormState = {
   scope: string
   type: string
+  status: string
   from: string
   to: string
   q: string
@@ -51,6 +52,10 @@ export function TransactionsFilters() {
 
   const scopeOptions = React.useMemo(() => asStringArray(TransactionScope), [])
   const typeOptions = React.useMemo(() => asStringArray(Transaction), [])
+  const statusOptions = React.useMemo(
+    () => asStringArray(TransactionStatus),
+    [],
+  )
 
   const ALL = "__ALL__"
 
@@ -58,6 +63,7 @@ export function TransactionsFilters() {
     return {
       scope: sp.get("scope") ?? ALL,
       type: sp.get("type") ?? ALL,
+      status: sp.get("status") ?? ALL,
       from: sp.get("from") ?? "",
       to: sp.get("to") ?? "",
       q: sp.get("q") ?? "",
@@ -79,6 +85,7 @@ export function TransactionsFilters() {
     setForm({
       scope: ALL,
       type: ALL,
+      status: ALL,
       from: "",
       to: "",
       q: "",
@@ -91,6 +98,7 @@ export function TransactionsFilters() {
 
     if (form.scope && form.scope !== ALL) params.set("scope", form.scope)
     if (form.type && form.type !== ALL) params.set("type", form.type)
+    if (form.status && form.status !== ALL) params.set("status", form.status)
 
     if (form.from) params.set("from", form.from)
     if (form.to) params.set("to", form.to)
@@ -136,7 +144,7 @@ export function TransactionsFilters() {
         <Collapsible open={open} onOpenChange={setOpen}>
           <CollapsibleContent>
             <form onSubmit={onSubmit} className="space-y-4">
-              <div className="grid gap-4 grid-cols-5 sm:grid-cols-4 xl:grid-cols-5">
+              <div className="grid gap-4 grid-cols-5 sm:grid-cols-4 xl:grid-cols-6">
                 <div className="space-y-2 col-span-5 sm:col-span-4 xl:col-span-1">
                   <Label>Search</Label>
                   <div className="relative">
@@ -172,16 +180,36 @@ export function TransactionsFilters() {
                 </div>
 
                 <div className="space-y-2 col-span-5 sm:col-span-2 xl:col-span-1">
+                  <Label>Status</Label>
+                  <Select
+                    value={form.status}
+                    onValueChange={(v) => update("status", v)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="ALL" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value={ALL}>ALL</SelectItem>
+                      {statusOptions.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2 col-span-5 sm:col-span-2 xl:col-span-1">
                   <Label>Type</Label>
                   <Select
                     value={form.type}
                     onValueChange={(v) => update("type", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="All" />
+                      <SelectValue placeholder="ALL" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ALL}>All</SelectItem>
+                      <SelectItem value={ALL}>ALL</SelectItem>
                       {typeOptions.map((opt) => (
                         <SelectItem key={opt} value={opt}>
                           {opt}
@@ -198,10 +226,10 @@ export function TransactionsFilters() {
                     onValueChange={(v) => update("scope", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="All" />
+                      <SelectValue placeholder="ALL" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ALL}>All</SelectItem>
+                      <SelectItem value={ALL}>ALL</SelectItem>
                       {scopeOptions.map((opt) => (
                         <SelectItem key={opt} value={opt}>
                           {opt}
