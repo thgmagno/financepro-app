@@ -169,9 +169,41 @@ export function UpdateUserProfileForm({
           <FieldSet>
             <FieldGroup>
               <Field data-invalid={!!sharePolicyErrors}>
-                <FieldLabel htmlFor="sharePolicy">Share policy</FieldLabel>
-                <FieldDescription>
+                <FieldLabel htmlFor="sharePolicy">
                   Choose how your data can be shared.
+                </FieldLabel>
+                <FieldDescription>
+                  {sharePolicy === "NONE" && (
+                    <span className="text-sm text-muted-foreground">
+                      Your data won’t be shared.
+                    </span>
+                  )}
+
+                  {sharePolicy === "ALL" && (
+                    <span className="text-sm text-muted-foreground">
+                      Your data may be shared without restrictions.
+                    </span>
+                  )}
+
+                  {sharePolicy === "ABOVE_VALUE" && (
+                    <span className="text-sm text-muted-foreground">
+                      Your data may be shared only when the value is above{" "}
+                      <strong>
+                        {sharePolicyValue || "the threshold you set"}
+                      </strong>
+                      .
+                    </span>
+                  )}
+
+                  {sharePolicy === "BELOW_VALUE" && (
+                    <span className="text-sm text-muted-foreground">
+                      Your data may be shared only when the value is below{" "}
+                      <strong>
+                        {sharePolicyValue || "the threshold you set"}
+                      </strong>
+                      .
+                    </span>
+                  )}
                 </FieldDescription>
                 <Select
                   name="sharePolicy"
