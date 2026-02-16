@@ -11,6 +11,12 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "effectiveAt",
     header: "Date",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("effectiveAt"))
+      const formatted = date.toISOString().slice(0, 10)
+
+      return <div>{formatted}</div>
+    },
   },
   {
     accessorKey: "status",
@@ -22,8 +28,9 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"))
       const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
+        style: "decimal",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
       }).format(amount)
 
       return <div className="text-right font-medium">{formatted}</div>
