@@ -1,5 +1,5 @@
 import { AppSidebar } from "@/components/layout/AppSidebar"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar"
 import { config } from "@/config"
 import { cookies } from "next/headers"
+import Link from "next/link"
 
 async function getSidebarState() {
   "use server"
@@ -44,9 +45,12 @@ export default async function PrivateLayout({
             />
             <div className="ml-auto flex items-center gap-2">
               <form action="">
-                <Button type="submit" variant="ghost" size="sm">
+                <Link
+                  href="/transactions/new"
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
                   New
-                </Button>
+                </Link>
               </form>
             </div>
           </div>

@@ -14,7 +14,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ChartPie, LogOut, Settings, Users } from "lucide-react"
+import {
+  BanknoteArrowUp,
+  ChartPie,
+  LogOut,
+  Settings,
+  Users,
+} from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import {
@@ -61,6 +67,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Link href="/group">
                     <Users />
                     <span>Group</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false)
+                  }}
+                >
+                  <Link href="/transactions">
+                    <BanknoteArrowUp />
+                    <span>Transactions</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
