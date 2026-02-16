@@ -7,6 +7,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { config } from "@/config"
+import { Plus } from "lucide-react"
 import { cookies } from "next/headers"
 import Link from "next/link"
 
@@ -47,9 +48,10 @@ export default async function PrivateLayout({
               <form action="">
                 <Link
                   href="/transactions/new"
-                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                  className={buttonVariants({ size: "xs" })}
                 >
                   New
+                  <Plus />
                 </Link>
               </form>
             </div>

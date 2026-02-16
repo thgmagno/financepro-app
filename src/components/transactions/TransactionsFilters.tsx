@@ -144,7 +144,7 @@ export function TransactionsFilters() {
         <Collapsible open={open} onOpenChange={setOpen}>
           <CollapsibleContent>
             <form onSubmit={onSubmit} className="space-y-4">
-              <div className="grid gap-4 grid-cols-5 sm:grid-cols-4 xl:grid-cols-6">
+              <div className="grid gap-4 grid-cols-5 sm:grid-cols-4 xl:grid-cols-3 2xl:grid-cols-6">
                 <div className="space-y-2 col-span-5 sm:col-span-4 xl:col-span-1">
                   <Label>Search</Label>
                   <div className="relative">
