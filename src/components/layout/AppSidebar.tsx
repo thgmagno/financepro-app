@@ -1,3 +1,5 @@
+"use client"
+
 import { endSession } from "@/actions/session"
 import {
   Sidebar,
@@ -9,8 +11,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
-import { LogOut, Settings } from "lucide-react"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { ChartPie, LogOut, Settings } from "lucide-react"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import {
@@ -24,16 +28,43 @@ import {
 } from "../ui/dialog"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const isMobile = useIsMobile()
+  const { setOpenMobile } = useSidebar()
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader />
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false)
+                  }}
+                >
+                  <Link href="/">
+                    <ChartPie />
+                    <span>Dashboard</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup className="mt-auto">
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="/settings">
+                  <Link
+                    href="/settings"
+                    onClick={() => {
+                      if (isMobile) setOpenMobile(false)
+                    }}
+                  >
                     <Settings />
                     <span>Settings</span>
                   </Link>
