@@ -6,13 +6,13 @@ const schema = z.object({
 
 const environment = schema.parse(process.env)
 
-const publicRoutes = [
-  "/sign-in",
-  "/sign-up",
-  "/change-password",
-  "/request/change-password",
-  "/request/sign-up",
-]
+const publicRoutes = {
+  signIn: "/sign-in",
+  signUp: "/sign-up",
+  changePassword: "/change-password",
+  requestChangePassword: "/request/change-password",
+  requestSignUp: "/request/sign-up",
+}
 
 const routes = {
   // AUTH
@@ -50,7 +50,8 @@ const routes = {
 
 export const config = {
   environment,
-  accessTokenName: "finance-pro-access-token",
   routes,
   publicRoutes,
+  accessTokenName: "finance-pro-access-token",
+  sidebarStateTokenName: "finance-pro-sidebar-state",
 }

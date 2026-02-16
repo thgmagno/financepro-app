@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { config } from "./config"
 
 function isPublicRoute(pathname: string) {
-  return config.publicRoutes.some((route) => {
+  return Object.values(config.publicRoutes).some((route) => {
     if (route === pathname) return true
     if (route !== "/" && pathname.startsWith(route)) return true
     return false
