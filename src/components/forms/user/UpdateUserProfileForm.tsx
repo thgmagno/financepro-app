@@ -39,6 +39,7 @@ export interface UpdateUserProfileFormState {
     sharePolicyValue?: string[]
     _form?: string
   }
+  successMessage?: string
 }
 
 interface UpdateUserProfileFormProps {
@@ -73,7 +74,16 @@ export function UpdateUserProfileForm({
     userSharePolicyValue ?? "",
   )
 
+  const [isDirty, setIsDirty] = useState(
+    name !== userName || sharePolicy !== userSharePolicy,
+  )
+
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    if (!isDirty) {
+      e.preventDefault()
+      return
+    }
+
     const formData = new FormData(e.currentTarget)
     const parsed = UpdateUserProfileSchema.safeParse(
       Object.fromEntries(formData),
@@ -105,6 +115,10 @@ export function UpdateUserProfileForm({
     if (formState.errors._form) {
       toast.error(formState.errors._form)
     }
+    if (formState.successMessage) {
+      toast.success(formState.successMessage)
+      setIsDirty(false)
+    }
   }, [formState])
 
   const sharePolicyRef = useRef<HTMLButtonElement>(null)
@@ -129,7 +143,10 @@ export function UpdateUserProfileForm({
                   id="name"
                   name="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value)
+                    setIsDirty(true)
+                  }}
                   placeholder="Your name"
                   aria-invalid={!!nameErrors}
                   autoCorrect="off"
@@ -159,7 +176,10 @@ export function UpdateUserProfileForm({
                 <Select
                   name="sharePolicy"
                   value={sharePolicy}
-                  onValueChange={(e) => setSharePolicy(e as SharePolicyType)}
+                  onValueChange={(e) => {
+                    setSharePolicy(e as SharePolicyType)
+                    setIsDirty(true)
+                  }}
                 >
                   <SelectTrigger id="sharePolicy" ref={sharePolicyRef}>
                     <SelectValue />
@@ -191,7 +211,10 @@ export function UpdateUserProfileForm({
                     name="sharePolicyValue"
                     type="tel"
                     value={sharePolicyValue}
-                    onChange={(e) => setSharePolicyValue(e.target.value)}
+                    onChange={(e) => {
+                      setSharePolicyValue(e.target.value)
+                      setIsDirty(true)
+                    }}
                     aria-invalid={!!sharePolicyValueErrors}
                     autoCorrect="off"
                     spellCheck={false}
@@ -203,7 +226,11 @@ export function UpdateUserProfileForm({
           )}
         </CardContent>
         <CardFooter>
-          <FormSubmitButton label="Save changes" isPending={isPending} />
+          <FormSubmitButton
+            label="Save changes"
+            isPending={isPending}
+            disabled={!isDirty}
+          />
         </CardFooter>
       </form>
     </Card>

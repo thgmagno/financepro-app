@@ -1,6 +1,10 @@
 import { getDashboard } from "@/actions/dashboard"
 import { getToken, getUserIdFromJwt } from "@/actions/session"
-import { ChangeUserPasswordForm } from "@/components/forms/user/ChangeUserPasswordForm"
+import {
+  ChangeUserPasswordForm,
+  type ChangeUserPasswordFormState,
+} from "@/components/forms/user/ChangeUserPasswordForm"
+import { ChangeUserPasswordSchema } from "@/components/forms/user/ChangeUserPasswordSchema"
 import {
   UpdateUserProfileForm,
   type UpdateUserProfileFormState,
@@ -57,13 +61,66 @@ async function updateProfileAction(
       const userId = await getUserIdFromJwt(token)
       revalidateTag(`dashboard:${userId}`, "max")
     }
+
+    return { errors: {}, successMessage: r.data.message }
   } catch {
     return {
       errors: { _form: "Failed to fetch" },
     }
   }
+}
 
-  return { errors: {} }
+async function changeUserPasswordAction(
+  _formState: ChangeUserPasswordFormState,
+  formData: FormData,
+): Promise<ChangeUserPasswordFormState> {
+  "use server"
+
+  const parsed = ChangeUserPasswordSchema.safeParse(
+    Object.fromEntries(formData),
+  )
+
+  if (!parsed.success) {
+    const tree = z.treeifyError(parsed.error)
+
+    return {
+      errors: {
+        oldPassword: tree?.properties?.oldPassword?.errors,
+        newPassword: tree?.properties?.newPassword?.errors,
+        newPasswordConfirmation:
+          tree?.properties?.newPasswordConfirmation?.errors,
+      },
+    }
+  }
+
+  try {
+    const token = await getToken()
+    const res = await fetch(config.routes.meChangePassword, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        oldPassword: parsed.data.oldPassword,
+        newPassword: parsed.data.newPassword,
+        newPasswordConfirmation: parsed.data.newPasswordConfirmation,
+      }),
+    })
+
+    const r = await res.json()
+
+    if (!res.ok) {
+      return { errors: { _form: r.message } }
+    }
+
+    return { errors: {}, successMessage: r.data.message }
+  } catch {
+    return {
+      errors: { _form: "Failed to fetch" },
+    }
+  }
 }
 
 export default async function Settings() {
@@ -77,7 +134,9 @@ export default async function Settings() {
         userSharePolicyValue={data.sharePolicyValue}
         updateProfileAction={updateProfileAction}
       />
-      <ChangeUserPasswordForm />
+      <ChangeUserPasswordForm
+        changeUserPasswordAction={changeUserPasswordAction}
+      />
     </Page>
   )
 }

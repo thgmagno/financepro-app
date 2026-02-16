@@ -1,13 +1,12 @@
 import { SharePolicy } from "@/types"
 import { z } from "zod"
-import { MAX_255 } from "../auth/SignUpSchema"
 
 export const UpdateUserProfileSchema = z
   .object({
     name: z
       .string()
       .min(1, { message: "Enter your name." })
-      .max(MAX_255, { message: "Name must be 255 characters or less." }),
+      .max(255, { message: "Name must be 255 characters or less." }),
 
     sharePolicy: z.enum(SharePolicy),
 
