@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
@@ -101,6 +101,10 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
     }
   }, [formState])
 
+  const nameRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement>(null)
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -120,6 +124,11 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 <Input
                   name="email"
                   value={email}
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
                   onChange={(e) => setEmail(e.target.value)}
                   aria-invalid={!!emailErrors}
                   placeholder="m@example.com"
@@ -144,6 +153,15 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   placeholder="XXXXXX"
                   aria-invalid={!!confirmationCodeErrors}
                   className="uppercase"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      nameRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{confirmationCodeErrors}</FieldError>
               </Field>
@@ -156,11 +174,22 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
               <Field data-invalid={!!nameErrors}>
                 <FieldLabel htmlFor="name">Name</FieldLabel>
                 <Input
+                  ref={nameRef}
                   name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
                   aria-invalid={!!nameErrors}
+                  autoCorrect="off"
+                  autoComplete="name"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      passwordRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{nameErrors}</FieldError>
               </Field>
@@ -187,12 +216,22 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   Must be at least 8 characters long.
                 </FieldDescription>
                 <Input
+                  ref={passwordRef}
                   name="password"
                   type={passwordVisible ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Your secure password"
                   aria-invalid={!!passwordErrors}
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      confirmPasswordRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{passwordErrors}</FieldError>
               </Field>
@@ -207,12 +246,15 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   Confirm your password
                 </FieldLabel>
                 <Input
+                  ref={confirmPasswordRef}
                   name="passwordConfirmation"
                   type={passwordVisible ? "text" : "password"}
                   value={passwordConfirmation}
                   onChange={(e) => setPasswordConfirmation(e.target.value)}
                   placeholder="Confirm your password"
                   aria-invalid={!!passwordConfirmationErrors}
+                  autoCorrect="off"
+                  spellCheck={false}
                 />
                 <FieldError>{passwordConfirmationErrors}</FieldError>
               </Field>

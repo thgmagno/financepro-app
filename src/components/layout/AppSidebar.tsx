@@ -39,31 +39,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton>
-                        <LogOut />
-                        <span>Logout</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>End session</DialogTitle>
-                      <DialogDescription>
-                        You will need to authenticate again when you return.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <form action={endSession}>
-                        <Button type="submit">Confirm</Button>
-                      </form>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </SidebarMenuItem>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton>
+                      <LogOut />
+                      <span>Logout</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>End session</DialogTitle>
+                    <DialogDescription>
+                      You will need to authenticate again when you return.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <form action={endSession}>
+                      <Button type="submit">Confirm</Button>
+                    </form>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

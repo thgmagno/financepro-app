@@ -41,7 +41,7 @@ async function signUpAction(
       },
       body: JSON.stringify({
         email: parsed.data.email,
-        confirmationCode: parsed.data.confirmationCode,
+        confirmationCode: String(parsed.data.confirmationCode).toUpperCase(),
         name: parsed.data.name,
         password: parsed.data.password,
         passwordConfirmation: parsed.data.passwordConfirmation,

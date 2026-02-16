@@ -40,7 +40,7 @@ async function changePasswordAction(
       },
       body: JSON.stringify({
         email: parsed.data.email,
-        confirmationCode: parsed.data.confirmationCode,
+        confirmationCode: String(parsed.data.confirmationCode).toUpperCase(),
         newPassword: parsed.data.newPassword,
         newPasswordConfirmation: parsed.data.newPasswordConfirmation,
       }),

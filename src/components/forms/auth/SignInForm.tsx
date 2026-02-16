@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
@@ -86,6 +86,8 @@ export function SignInForm({ signInAction }: SignInFormProps) {
     }
   }, [formState])
 
+  const passwordRef = useRef<HTMLInputElement>(null)
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -115,6 +117,17 @@ export function SignInForm({ signInAction }: SignInFormProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="m@example.com"
                   aria-invalid={!!emailErrors}
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      passwordRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{emailErrors}</FieldError>
               </Field>
@@ -138,6 +151,7 @@ export function SignInForm({ signInAction }: SignInFormProps) {
                   </Button>
                 </div>
                 <Input
+                  ref={passwordRef}
                   name="password"
                   type={passwordVisible ? "text" : "password"}
                   value={password}

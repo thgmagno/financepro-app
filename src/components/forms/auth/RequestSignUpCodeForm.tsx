@@ -94,6 +94,10 @@ export function RequestSignUpCodeForm({
                 <Input
                   name="email"
                   value={email}
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="m@example.com"
                   aria-invalid={!!emailErrors}

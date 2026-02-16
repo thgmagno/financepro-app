@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import z from "zod"
 import { FormSubmitButton } from "../FormSubmitButton"
@@ -101,6 +101,9 @@ export function ChangePasswordForm({
     }
   }, [formState])
 
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const confirmPasswordRef = useRef<HTMLInputElement>(null)
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -120,6 +123,11 @@ export function ChangePasswordForm({
                 <Input
                   name="email"
                   value={email}
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
                   onChange={(e) => setEmail(e.target.value)}
                   aria-invalid={!!emailErrors}
                   placeholder="m@example.com"
@@ -144,6 +152,15 @@ export function ChangePasswordForm({
                   placeholder="XXXXXX"
                   aria-invalid={!!confirmationCodeErrors}
                   className="uppercase"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      passwordRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{confirmationCodeErrors}</FieldError>
               </Field>
@@ -170,12 +187,22 @@ export function ChangePasswordForm({
                   Must be at least 8 characters long.
                 </FieldDescription>
                 <Input
+                  ref={passwordRef}
                   name="newPassword"
                   type={passwordVisible ? "text" : "password"}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Your secure password"
                   aria-invalid={!!newPasswordErrors}
+                  autoCorrect="off"
+                  spellCheck={false}
+                  enterKeyHint="next"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault()
+                      confirmPasswordRef.current?.focus()
+                    }
+                  }}
                 />
                 <FieldError>{newPasswordErrors}</FieldError>
               </Field>
@@ -190,6 +217,7 @@ export function ChangePasswordForm({
                   Confirm your new password
                 </FieldLabel>
                 <Input
+                  ref={confirmPasswordRef}
                   name="newPasswordConfirmation"
                   type={passwordVisible ? "text" : "password"}
                   value={newPasswordConfirmation}
