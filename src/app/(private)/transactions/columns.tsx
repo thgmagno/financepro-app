@@ -1,6 +1,5 @@
 "use client"
 
-import { transactionStatusMap } from "@/lib/utils"
 import type { Transaction } from "@/types"
 import type { ColumnDef } from "@tanstack/react-table"
 
@@ -14,9 +13,8 @@ export const columns: ColumnDef<Transaction>[] = [
     header: "Date",
   },
   {
-    accessorKey: "occurredAt",
+    accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => transactionStatusMap(row.original),
   },
   {
     accessorKey: "amount",

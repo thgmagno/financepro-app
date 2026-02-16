@@ -30,6 +30,7 @@ export interface Transaction {
   amount: number
   type: TransactionType
   scope: TransactionScopeType
+  status: TransactionStatusType
   occurredAt: Date | null
   effectiveAt: Date
   userId: string

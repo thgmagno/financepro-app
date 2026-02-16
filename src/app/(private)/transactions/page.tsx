@@ -1,6 +1,7 @@
 import { getTransactions } from "@/actions/transaction"
 import { Page } from "@/components/layout/Page"
 import { TransactionsFilters } from "@/components/transactions/TransactionsFilters"
+import { TransactionsImportBtn } from "@/components/transactions/TransactionsImportBtn"
 import { TransactionsTable } from "@/components/transactions/TransactionsTable"
 import { columns } from "./columns"
 
@@ -38,6 +39,9 @@ export default async function Transactions(props: {
 
   return (
     <Page>
+      <header className="flex">
+        <TransactionsImportBtn />
+      </header>
       <TransactionsFilters />
       <TransactionsTable columns={columns} data={data} />
     </Page>
