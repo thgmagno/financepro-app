@@ -125,7 +125,7 @@ export function UpdateUserProfileForm({
   const sharePolicyValueRef = useRef<HTMLInputElement>(null)
 
   return (
-    <Card className="w-full h-fit">
+    <Card className="w-full max-w-3xl">
       <CardHeader>
         <CardTitle>Update profile</CardTitle>
         <CardDescription>

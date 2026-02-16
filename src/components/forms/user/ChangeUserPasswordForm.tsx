@@ -103,7 +103,7 @@ export function ChangeUserPasswordForm({
   const newPasswordConfirmationRef = useRef<HTMLInputElement>(null)
 
   return (
-    <Card className="w-full h-fit">
+    <Card className="w-full max-w-3xl">
       <CardHeader>
         <CardTitle>Update your password</CardTitle>
         <CardDescription>Set a new password for your account.</CardDescription>

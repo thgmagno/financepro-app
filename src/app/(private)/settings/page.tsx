@@ -127,7 +127,7 @@ export default async function Settings() {
   const { data } = await getDashboard()
 
   return (
-    <Page grid cols={3}>
+    <Page>
       <UpdateUserProfileForm
         userName={data.name}
         userSharePolicy={data.sharePolicy}

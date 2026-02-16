@@ -26,10 +26,17 @@ export interface Transaction {
   userId: string
 }
 
+export interface GroupMember {
+  id: string
+  name: string
+  email: string
+  isAdmin: boolean
+}
+
 export interface Group {
   id: string
   name: string
-  members: number
+  members: GroupMember[]
   isAdmin: boolean
 }
 
