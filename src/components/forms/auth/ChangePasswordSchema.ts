@@ -31,7 +31,7 @@ export const ChangePasswordSchema = z
   .superRefine(({ newPassword, newPasswordConfirmation }, ctx) => {
     if (newPassword !== newPasswordConfirmation) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["newPasswordConfirmation"],
         message: "Passwords do not match.",
       })

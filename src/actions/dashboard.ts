@@ -2,6 +2,7 @@ import "server-only"
 
 import { getToken, getUserIdFromJwt } from "@/actions/session"
 import { config } from "@/config"
+import type { Dashboard } from "@/types"
 import { unstable_cache } from "next/cache"
 
 async function fetchDashboard(token: string) {
@@ -16,7 +17,7 @@ async function fetchDashboard(token: string) {
   })
 
   if (!res.ok) throw new Error(`Dashboard fetch failed: ${res.status}`)
-  return res.json()
+  return res.json() as Promise<{ data: Dashboard }>
 }
 
 export async function getDashboard() {
@@ -28,7 +29,10 @@ export async function getDashboard() {
   const getDashboardCached = unstable_cache(
     async (t: string) => fetchDashboard(t),
     ["dashboard", userId],
-    { revalidate: 10 },
+    {
+      revalidate: 10,
+      tags: [`dashboard:${userId}`],
+    },
   )
 
   return getDashboardCached(token)

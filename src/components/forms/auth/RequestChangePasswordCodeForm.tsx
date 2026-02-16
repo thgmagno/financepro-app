@@ -95,6 +95,7 @@ export function RequestChangePasswordCodeForm({
               <Field data-invalid={!!emailErrors}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  id="email"
                   name="email"
                   inputMode="email"
                   autoCapitalize="none"

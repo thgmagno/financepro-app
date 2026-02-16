@@ -92,6 +92,7 @@ export function RequestSignUpCodeForm({
               <Field data-invalid={!!emailErrors}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  id="email"
                   name="email"
                   value={email}
                   inputMode="email"

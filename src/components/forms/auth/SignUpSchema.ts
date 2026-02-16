@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const MAX_255 = 255
+export const MAX_255 = 255
 
 export const SignUpSchema = z
   .object({
@@ -36,7 +36,7 @@ export const SignUpSchema = z
   .superRefine(({ password, passwordConfirmation }, ctx) => {
     if (password !== passwordConfirmation) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["passwordConfirmation"],
         message: "Passwords do not match.",
       })

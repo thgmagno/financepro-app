@@ -122,6 +122,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
               <Field data-invalid={!!emailErrors}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  id="email"
                   name="email"
                   value={email}
                   inputMode="email"
@@ -147,6 +148,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                   Verification code
                 </FieldLabel>
                 <Input
+                  id="confirmationCode"
                   name="confirmationCode"
                   value={confirmationCode}
                   onChange={(e) => setConfirmationCode(e.target.value)}
@@ -175,6 +177,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 <FieldLabel htmlFor="name">Name</FieldLabel>
                 <Input
                   ref={nameRef}
+                  id="name"
                   name="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -217,6 +220,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 </FieldDescription>
                 <Input
                   ref={passwordRef}
+                  id="password"
                   name="password"
                   type={passwordVisible ? "text" : "password"}
                   value={password}
@@ -247,6 +251,7 @@ export function SignUpForm({ signUpAction }: SignUpFormProps) {
                 </FieldLabel>
                 <Input
                   ref={confirmPasswordRef}
+                  id="passwordConfirmation"
                   name="passwordConfirmation"
                   type={passwordVisible ? "text" : "password"}
                   value={passwordConfirmation}

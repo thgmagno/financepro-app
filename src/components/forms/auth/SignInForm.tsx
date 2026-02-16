@@ -112,6 +112,7 @@ export function SignInForm({ signInAction }: SignInFormProps) {
               <Field data-invalid={!!emailErrors}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  id="email"
                   name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -152,6 +153,7 @@ export function SignInForm({ signInAction }: SignInFormProps) {
                 </div>
                 <Input
                   ref={passwordRef}
+                  id="password"
                   name="password"
                   type={passwordVisible ? "text" : "password"}
                   value={password}

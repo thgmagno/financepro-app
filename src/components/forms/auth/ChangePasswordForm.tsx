@@ -121,6 +121,7 @@ export function ChangePasswordForm({
               <Field data-invalid={!!emailErrors}>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  id="email"
                   name="email"
                   value={email}
                   inputMode="email"
@@ -146,6 +147,7 @@ export function ChangePasswordForm({
                   Verification code
                 </FieldLabel>
                 <Input
+                  id="confirmationCode"
                   name="confirmationCode"
                   value={confirmationCode}
                   onChange={(e) => setConfirmationCode(e.target.value)}
@@ -172,7 +174,7 @@ export function ChangePasswordForm({
             <FieldGroup>
               <Field data-invalid={!!newPasswordErrors}>
                 <div className="flex justify-between">
-                  <FieldLabel htmlFor="password">New password</FieldLabel>
+                  <FieldLabel htmlFor="newPassword">New password</FieldLabel>
                   <Button
                     type="button"
                     variant="link"
@@ -188,6 +190,7 @@ export function ChangePasswordForm({
                 </FieldDescription>
                 <Input
                   ref={passwordRef}
+                  id="newPassword"
                   name="newPassword"
                   type={passwordVisible ? "text" : "password"}
                   value={newPassword}
@@ -218,6 +221,7 @@ export function ChangePasswordForm({
                 </FieldLabel>
                 <Input
                   ref={confirmPasswordRef}
+                  id="passwordConfirmation"
                   name="newPasswordConfirmation"
                   type={passwordVisible ? "text" : "password"}
                   value={newPasswordConfirmation}
