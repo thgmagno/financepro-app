@@ -13,3 +13,11 @@ export async function endSession() {
   cookiesStore.delete(config.accessTokenName)
   redirect(config.publicRoutes.signIn)
 }
+
+export async function getUserIdFromJwt(token?: string) {
+  if (!token) return "anonymous"
+  const [, payload] = token.split(".")
+  if (!payload) return "anonymous"
+  const json = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"))
+  return String(json.sub ?? json.userId ?? json.id ?? "unknown")
+}

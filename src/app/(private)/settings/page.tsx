@@ -1,9 +1,16 @@
+import { getDashboard } from "@/actions/dashboard"
+import { ChangeUserPasswordForm } from "@/components/forms/user/ChangeUserPasswordForm"
+import { UpdateUserProfileForm } from "@/components/forms/user/UpdateUserProfileForm"
 import { Page } from "@/components/layout/Page"
 
-export default function Settings() {
+export default async function Settings() {
+  const { data } = await getDashboard()
+
   return (
     <Page>
-      <h1>Settings</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+      <UpdateUserProfileForm />
+      <ChangeUserPasswordForm />
     </Page>
   )
 }
