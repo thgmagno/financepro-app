@@ -31,21 +31,23 @@ export function GroupDetails({
         updateGroupAction={updateGroupAction}
       />
       <CardContent className="px-4">
-        {group.members.map((m) => (
-          <div key={m.id} className="flex border rounded-md p-3 items-center">
-            <div className="flex-1">
-              <p className="flex gap-2 items-center">
-                {m.name} {m.isAdmin && <Crown size={16} />}
-              </p>
-              <span className="text-muted-foreground text-sm">{m.email}</span>
+        {group.members
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((m) => (
+            <div key={m.id} className="flex border rounded-md p-3 items-center">
+              <div className="flex-1">
+                <p className="flex gap-2 items-center">
+                  {m.name} {m.isAdmin && <Crown size={16} />}
+                </p>
+                <span className="text-muted-foreground text-sm">{m.email}</span>
+              </div>
+              {group.isAdmin && currentUserEmail !== m.email && (
+                <Button variant="destructive" size="icon-sm">
+                  <LogOut />
+                </Button>
+              )}
             </div>
-            {group.isAdmin && currentUserEmail !== m.email && (
-              <Button variant="destructive" size="icon-sm">
-                <LogOut />
-              </Button>
-            )}
-          </div>
-        ))}
+          ))}
       </CardContent>
     </Card>
   )
