@@ -1,5 +1,10 @@
-export type TransactionType = "INCOME" | "OUTCOME"
-export type TransactionScope = "PRIVATE" | "GROUP"
+export const Transaction = ["INCOME", "OUTCOME"] as const
+
+export type TransactionType = (typeof Transaction)[number]
+
+export const TransactionScope = ["PRIVATE", "GROUP"] as const
+
+export type TransactionScopeType = (typeof TransactionScope)[number]
 
 export const SharePolicy = [
   "NONE",
@@ -20,7 +25,7 @@ export interface Transaction {
   note: string | null
   amount: number
   type: TransactionType
-  scope: TransactionScope
+  scope: TransactionScopeType
   occurredAt: Date | null
   effectiveAt: Date
   userId: string
