@@ -21,6 +21,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  getScopeLabel,
+  getStatusLabel,
+  getTypeLabel,
+} from "@/lib/transaction.utils"
 import { Transaction, TransactionScope, TransactionStatus } from "@/types"
 import clsx from "clsx"
 import { DatePicker } from "../layout/DatePicker"
@@ -288,40 +293,4 @@ function buildActiveChips(form: FormState) {
   chips.push(`Scope: ${getScopeLabel(form.scope)}`)
 
   return chips
-}
-
-function titleize(input: string) {
-  return input
-    .replaceAll("_", " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
-function getStatusLabel(value: string) {
-  if (value === ALL) return "Any status"
-  switch (value) {
-    case "PENDING":
-      return "Pending"
-    case "COMPLETED":
-      return "Completed"
-    default:
-      return titleize(value)
-  }
-}
-
-function getTypeLabel(value: string) {
-  if (value === ALL) return "Any type"
-  return titleize(value)
-}
-
-function getScopeLabel(value: string) {
-  if (value === ALL) return "Any scope"
-  switch (value) {
-    case "PRIVATE":
-      return "Private"
-    case "GROUP":
-      return "Shared with my group"
-    default:
-      return titleize(value)
-  }
 }
