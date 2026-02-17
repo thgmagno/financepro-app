@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select"
 import { Transaction, TransactionScope, TransactionStatus } from "@/types"
 import clsx from "clsx"
+import { DatePicker } from "../layout/DatePicker"
 import { Badge } from "../ui/badge"
 
 function asStringArray(e: unknown): string[] {
@@ -177,21 +178,17 @@ export function TransactionsFilters() {
 
                 <div className="space-y-2 col-span-5 sm:col-span-2 xl:col-span-1">
                   <Label>From</Label>
-                  <Input
-                    type="date"
+                  <DatePicker
                     value={form.from}
-                    onChange={(e) => update("from", e.target.value)}
-                    placeholder="YYYY-MM-DD"
+                    onChange={(v) => update("from", v)}
                   />
                 </div>
 
                 <div className="space-y-2 col-span-5 sm:col-span-2 xl:col-span-1">
                   <Label>To</Label>
-                  <Input
-                    type="date"
+                  <DatePicker
                     value={form.to}
-                    onChange={(e) => update("to", e.target.value)}
-                    placeholder="YYYY-MM-DD"
+                    onChange={(v) => update("to", v)}
                   />
                 </div>
 
