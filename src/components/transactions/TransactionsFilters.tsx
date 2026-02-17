@@ -6,13 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Collapsible,
   CollapsibleContent,
@@ -29,6 +23,7 @@ import {
 } from "@/components/ui/select"
 import { Transaction, TransactionScope, TransactionStatus } from "@/types"
 import clsx from "clsx"
+import { Badge } from "../ui/badge"
 
 function asStringArray(e: unknown): string[] {
   if (Array.isArray(e)) return e.map(String)
@@ -45,6 +40,8 @@ type FormState = {
   q: string
 }
 
+const ALL = "__ALL__"
+
 export function TransactionsFilters() {
   const router = useRouter()
   const pathname = usePathname()
@@ -56,8 +53,6 @@ export function TransactionsFilters() {
     () => asStringArray(TransactionStatus),
     [],
   )
-
-  const ALL = "__ALL__"
 
   const initial: FormState = React.useMemo(() => {
     return {
@@ -71,6 +66,8 @@ export function TransactionsFilters() {
   }, [sp])
 
   const [open, setOpen] = React.useState(false)
+  const closed = !open
+
   const [form, setForm] = React.useState<FormState>(initial)
 
   React.useEffect(() => {
@@ -115,15 +112,34 @@ export function TransactionsFilters() {
     apply()
   }
 
+  const activeChips = React.useMemo(() => buildActiveChips(form), [form])
+  const isResetable =
+    form.q !== "" ||
+    form.from !== "" ||
+    form.to !== "" ||
+    [form.status, form.type, form.scope].some((t) => t !== ALL)
+
   return (
     <Card className={clsx({ "pb-6": open })}>
       <CardHeader className="space-y-2">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="flex flex-col gap-2">
             <CardTitle className="text-base">Filters</CardTitle>
-            <CardDescription>
-              Refine by scope, type, dates, pagination, and search.
-            </CardDescription>
+            {closed && (
+              <div className="flex flex-wrap gap-2 select-none cursor-default">
+                {activeChips.slice(0, 3).map((c) => (
+                  <Badge key={c}>{c}</Badge>
+                ))}
+                {activeChips.length > 3 && (
+                  <Badge
+                    variant="secondary"
+                    title={activeChips.slice(3).join("\n")}
+                  >
+                    +{activeChips.length - 4} more
+                  </Badge>
+                )}
+              </div>
+            )}
           </div>
 
           <Collapsible open={open} onOpenChange={setOpen}>
@@ -151,7 +167,7 @@ export function TransactionsFilters() {
                     <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                       className="pl-9"
-                      placeholder="e.g. grocery, rent, pix..."
+                      placeholder="Search by description"
                       value={form.q}
                       onChange={(e) => update("q", e.target.value)}
                       maxLength={100}
@@ -186,13 +202,13 @@ export function TransactionsFilters() {
                     onValueChange={(v) => update("status", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ALL" />
+                      <SelectValue placeholder="Any status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ALL}>ALL</SelectItem>
+                      <SelectItem value={ALL}>Any status</SelectItem>
                       {statusOptions.map((opt) => (
                         <SelectItem key={opt} value={opt}>
-                          {opt}
+                          {getStatusLabel(opt)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -206,13 +222,13 @@ export function TransactionsFilters() {
                     onValueChange={(v) => update("type", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ALL" />
+                      <SelectValue placeholder="Any type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ALL}>ALL</SelectItem>
+                      <SelectItem value={ALL}>Any type</SelectItem>
                       {typeOptions.map((opt) => (
                         <SelectItem key={opt} value={opt}>
-                          {opt}
+                          {getTypeLabel(opt)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -226,13 +242,13 @@ export function TransactionsFilters() {
                     onValueChange={(v) => update("scope", v)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="ALL" />
+                      <SelectValue placeholder="Any scope" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={ALL}>ALL</SelectItem>
+                      <SelectItem value={ALL}>Any scope</SelectItem>
                       {scopeOptions.map((opt) => (
                         <SelectItem key={opt} value={opt}>
-                          {opt}
+                          {getScopeLabel(opt)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -240,17 +256,19 @@ export function TransactionsFilters() {
                 </div>
               </div>
 
-              <div className="flex gap-2 justify-end">
+              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
                 <Button
                   type="button"
                   variant="ghost"
                   className="gap-2"
                   onClick={clear}
+                  disabled={!isResetable}
                 >
                   <RotateCcw className="h-4 w-4" />
-                  Clear
+                  Reset
                 </Button>
-                <Button type="submit">Apply filters</Button>
+
+                <Button type="submit">Apply</Button>
               </div>
             </form>
           </CollapsibleContent>
@@ -258,4 +276,53 @@ export function TransactionsFilters() {
       </CardContent>
     </Card>
   )
+}
+
+function buildActiveChips(form: FormState) {
+  const chips: string[] = []
+
+  if ((form.q ?? "").trim()) chips.push(`Search: ${form.q.trim()}`)
+  if (form.from) chips.push(`From: ${form.from}`)
+  if (form.to) chips.push(`To: ${form.to}`)
+  chips.push(`Status: ${getStatusLabel(form.status)}`)
+  chips.push(`Type: ${getTypeLabel(form.type)}`)
+  chips.push(`Scope: ${getScopeLabel(form.scope)}`)
+
+  return chips
+}
+
+function titleize(input: string) {
+  return input
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+function getStatusLabel(value: string) {
+  if (value === ALL) return "Any status"
+  switch (value) {
+    case "PENDING":
+      return "Pending"
+    case "COMPLETED":
+      return "Completed"
+    default:
+      return titleize(value)
+  }
+}
+
+function getTypeLabel(value: string) {
+  if (value === ALL) return "Any type"
+  return titleize(value)
+}
+
+function getScopeLabel(value: string) {
+  if (value === ALL) return "Any scope"
+  switch (value) {
+    case "PRIVATE":
+      return "Private"
+    case "GROUP":
+      return "Shared with my group"
+    default:
+      return titleize(value)
+  }
 }

@@ -1,5 +1,4 @@
 import { AppSidebar } from "@/components/layout/AppSidebar"
-import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
@@ -7,9 +6,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { config } from "@/config"
-import { Plus } from "lucide-react"
 import { cookies } from "next/headers"
-import Link from "next/link"
 
 async function getSidebarState() {
   "use server"
@@ -44,17 +41,6 @@ export default async function PrivateLayout({
               orientation="vertical"
               className="mx-2 data-[orientation=vertical]:h-4"
             />
-            <div className="ml-auto flex items-center gap-2">
-              <form action="">
-                <Link
-                  href="/transactions/new"
-                  className={buttonVariants({ size: "xs" })}
-                >
-                  New
-                  <Plus />
-                </Link>
-              </form>
-            </div>
           </div>
         </header>
 

@@ -3,6 +3,9 @@ import { Page } from "@/components/layout/Page"
 import { TransactionsFilters } from "@/components/transactions/TransactionsFilters"
 import { TransactionsImportBtn } from "@/components/transactions/TransactionsImportBtn"
 import { TransactionsTable } from "@/components/transactions/TransactionsTable"
+import { buttonVariants } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import Link from "next/link"
 import { columns } from "./columns"
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
@@ -39,8 +42,15 @@ export default async function Transactions(props: {
 
   return (
     <Page>
-      <header className="flex">
+      <header className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
         <TransactionsImportBtn />
+        <Link
+          href="/transactions/new"
+          className={buttonVariants({ size: "sm" })}
+        >
+          <Plus />
+          Create new
+        </Link>
       </header>
       <TransactionsFilters />
       <TransactionsTable columns={columns} data={data} />

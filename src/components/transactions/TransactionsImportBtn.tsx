@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -19,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { uploadTransactionsFile } from "@/actions/transaction"
 import { Upload } from "lucide-react"
 import { toast } from "sonner"
+import { FieldDescription } from "../ui/field"
 
 export function TransactionsImportBtn() {
   const [open, setOpen] = React.useState(false)
@@ -50,17 +50,14 @@ export function TransactionsImportBtn() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary" size="sm">
-          Import transactions <Upload />
+          <Upload />
+          Import transactions
         </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-105">
         <DialogHeader>
-          <DialogTitle>Import file</DialogTitle>
-          <DialogDescription>
-            Upload a <span className="font-medium">CSV</span> or{" "}
-            <span className="font-medium">PDF</span> file.
-          </DialogDescription>
+          <DialogTitle>Import transactions from file</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-4">
@@ -74,9 +71,9 @@ export function TransactionsImportBtn() {
               required
               disabled={isPending}
             />
-            <p className="text-sm text-muted-foreground">
+            <FieldDescription className="text-important font-medium">
               Accepted types: CSV or PDF.
-            </p>
+            </FieldDescription>
           </div>
 
           <DialogFooter className="gap-2 sm:gap-0">
