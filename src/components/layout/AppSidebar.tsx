@@ -25,6 +25,7 @@ import Link from "next/link"
 import { Button } from "../ui/button"
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -107,20 +108,31 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuItem>
                     <SidebarMenuButton>
                       <LogOut />
-                      <span>Logout</span>
+                      <span>Log out</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 </DialogTrigger>
+
                 <DialogContent className="sm:max-w-md">
                   <DialogHeader>
-                    <DialogTitle>End session</DialogTitle>
+                    <DialogTitle>Log out of your account?</DialogTitle>
                     <DialogDescription>
-                      You will need to authenticate again when you return.
+                      You’ll be signed out on this device. To access your
+                      account again, you’ll need to log in.
                     </DialogDescription>
                   </DialogHeader>
+
                   <DialogFooter>
+                    <DialogClose asChild>
+                      <Button type="button" variant="ghost">
+                        Cancel
+                      </Button>
+                    </DialogClose>
+
                     <form action={endSession}>
-                      <Button type="submit">Confirm</Button>
+                      <Button type="submit" variant="destructive">
+                        Log out
+                      </Button>
                     </form>
                   </DialogFooter>
                 </DialogContent>

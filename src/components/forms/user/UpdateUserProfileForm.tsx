@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { SharePolicy, type SharePolicyType } from "@/types"
 import { useActionState, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
@@ -165,46 +166,16 @@ export function UpdateUserProfileForm({
             </FieldGroup>
           </FieldSet>
 
+          <Separator className="my-6" />
+
           {/* SharePolicy */}
           <FieldSet>
             <FieldGroup>
               <Field data-invalid={!!sharePolicyErrors}>
                 <FieldLabel htmlFor="sharePolicy">
-                  Choose how your data can be shared.
+                  Choose how your transaction data can be shared with your
+                  group.
                 </FieldLabel>
-                <FieldDescription>
-                  {sharePolicy === "NONE" && (
-                    <span className="text-sm text-muted-foreground">
-                      Your data won’t be shared.
-                    </span>
-                  )}
-
-                  {sharePolicy === "ALL" && (
-                    <span className="text-sm text-muted-foreground">
-                      Your data may be shared without restrictions.
-                    </span>
-                  )}
-
-                  {sharePolicy === "ABOVE_VALUE" && (
-                    <span className="text-sm text-muted-foreground">
-                      Your data may be shared only when the value is above{" "}
-                      <strong>
-                        {sharePolicyValue || "the threshold you set"}
-                      </strong>
-                      .
-                    </span>
-                  )}
-
-                  {sharePolicy === "BELOW_VALUE" && (
-                    <span className="text-sm text-muted-foreground">
-                      Your data may be shared only when the value is below{" "}
-                      <strong>
-                        {sharePolicyValue || "the threshold you set"}
-                      </strong>
-                      .
-                    </span>
-                  )}
-                </FieldDescription>
                 <Select
                   name="sharePolicy"
                   value={sharePolicy}
@@ -220,7 +191,7 @@ export function UpdateUserProfileForm({
                     <SelectGroup>
                       {SharePolicy.map((i) => (
                         <SelectItem key={i} value={i}>
-                          {i}
+                          {getDescriptionSharePolicy(i)}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -236,7 +207,7 @@ export function UpdateUserProfileForm({
             <FieldSet>
               <FieldGroup>
                 <Field data-invalid={!!sharePolicyValueErrors}>
-                  <FieldLabel htmlFor="sharePolicyValue">Value</FieldLabel>
+                  <FieldLabel htmlFor="sharePolicyValue">Threshold</FieldLabel>
                   <Input
                     ref={sharePolicyValueRef}
                     id="sharePolicyValue"
@@ -256,6 +227,11 @@ export function UpdateUserProfileForm({
               </FieldGroup>
             </FieldSet>
           )}
+
+          <FieldDescription className="text-important font-medium">
+            If you are not part of a group, your data is always private and
+            never shared with third parties.
+          </FieldDescription>
         </CardContent>
         <CardFooter>
           <FormSubmitButton
@@ -267,4 +243,20 @@ export function UpdateUserProfileForm({
       </form>
     </Card>
   )
+}
+
+function getDescriptionSharePolicy(sharePolicy: SharePolicyType) {
+  switch (sharePolicy) {
+    case "NONE":
+      return "Keep my transaction data private (do not share with my group)."
+
+    case "ALL":
+      return "Share all my transaction data with my group."
+
+    case "ABOVE_VALUE":
+      return "Share my transaction data with my group only when the value is above the threshold."
+
+    case "BELOW_VALUE":
+      return "Share my transaction data with my group only when the value is below the threshold."
+  }
 }
