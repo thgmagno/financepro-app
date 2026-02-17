@@ -181,6 +181,7 @@ export function TransactionsFilters() {
                   <DatePicker
                     value={form.from}
                     onChange={(v) => update("from", v)}
+                    placeholder="Start of month"
                   />
                 </div>
 
@@ -189,6 +190,7 @@ export function TransactionsFilters() {
                   <DatePicker
                     value={form.to}
                     onChange={(v) => update("to", v)}
+                    placeholder="End of month"
                   />
                 </div>
 

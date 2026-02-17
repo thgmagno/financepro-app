@@ -47,7 +47,7 @@ export function DatePicker({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="bg-card justify-start font-normal w-full"
+          className="bg-card justify-start font-normal w-full hover:bg-card"
         >
           {value !== "" ? value : placeholder}
         </Button>
