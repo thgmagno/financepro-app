@@ -60,7 +60,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           {formatCurrency(transaction.amount)}
         </span>
         <span className="text-xs text-muted-foreground">
-          {formatDate(transaction.occurredAt, {
+          {formatDate(transaction.effectiveAt, {
             month: "short",
             day: "2-digit",
           })}
