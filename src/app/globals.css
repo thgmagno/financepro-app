@@ -39,6 +39,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-important: var(--important);
+  --color-success: var(--success);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -82,6 +83,7 @@
   --sidebar-border: hsl(240 3.7% 15.9%);
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
   --important: oklch(0.769 0.188 70.08);
+  --success: oklch(0.696 0.17 162.48);
 }
 
 @layer base {
