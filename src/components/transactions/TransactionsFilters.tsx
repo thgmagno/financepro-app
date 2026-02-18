@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ALL } from "@/lib/strings.utils"
 import {
   getScopeLabel,
   getStatusLabel,
@@ -45,8 +46,6 @@ type FormState = {
   to: string
   q: string
 }
-
-const ALL = "__ALL__"
 
 export function TransactionsFilters() {
   const router = useRouter()

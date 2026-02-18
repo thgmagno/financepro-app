@@ -1,3 +1,4 @@
+import { EMPTY } from "@/lib/strings.utils"
 import { TransactionScope } from "@/types"
 import { z } from "zod"
 
@@ -5,8 +6,6 @@ const uuid =
   "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}"
 
 const uuidCsvRegex = new RegExp(`^${uuid}(,${uuid})*$`)
-
-const EMPTY = "__EMPTY__"
 
 export const TransactionsEditBatchSchema = z.object({
   transactionIds: z

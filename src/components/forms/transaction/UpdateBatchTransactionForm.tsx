@@ -18,6 +18,7 @@ import {
 import { useAction } from "@/hooks/use-action"
 import type { Transaction } from "@/types"
 
+import { EMPTY } from "@/lib/strings.utils"
 import { useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
 import z from "zod"
@@ -55,8 +56,8 @@ export function UpdateBatchTransactionForm({
 
   const transactionIds = Array.from(transactions.map((t) => t.id))
 
-  const [scope, setScope] = useState("__EMPTY__")
-  const [isDirty, setIsDirty] = useState([scope].some((f) => f !== ""))
+  const [scope, setScope] = useState(EMPTY)
+  const isDirty = [scope].some((f) => f !== EMPTY)
 
   function onSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     if (!isDirty) {
@@ -90,7 +91,6 @@ export function UpdateBatchTransactionForm({
     }
     if (formState.successMessage) {
       toast.success(formState.successMessage)
-      setIsDirty(false)
     }
   }, [formState])
 
@@ -113,7 +113,6 @@ export function UpdateBatchTransactionForm({
                 value={scope}
                 onValueChange={(e) => {
                   setScope(e)
-                  setIsDirty(true)
                 }}
               >
                 <SelectTrigger id="scope" className="md:col-span-3">
@@ -121,7 +120,7 @@ export function UpdateBatchTransactionForm({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="__EMPTY__">Keep current</SelectItem>
+                    <SelectItem value={EMPTY}>Keep current</SelectItem>
                     <SelectItem value="PRIVATE">Set private</SelectItem>
                     <SelectItem value="GROUP">Set group</SelectItem>
                   </SelectGroup>

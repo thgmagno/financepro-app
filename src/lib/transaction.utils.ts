@@ -1,3 +1,5 @@
+import { ALL } from "./strings.utils"
+
 function titleize(input: string) {
   return input
     .replaceAll("_", " ")
@@ -6,7 +8,7 @@ function titleize(input: string) {
 }
 
 export function getStatusLabel(value: string) {
-  if (value === "__ALL__") return "Any status"
+  if (value === ALL) return "Any status"
   switch (value) {
     case "PENDING":
       return "Pending"
@@ -18,12 +20,12 @@ export function getStatusLabel(value: string) {
 }
 
 export function getTypeLabel(value: string) {
-  if (value === "__ALL__") return "Any type"
+  if (value === ALL) return "Any type"
   return titleize(value)
 }
 
 export function getScopeLabel(value: string) {
-  if (value === "__ALL__") return "Any scope"
+  if (value === ALL) return "Any scope"
   switch (value) {
     case "PRIVATE":
       return "Private"
