@@ -16,6 +16,7 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAction } from "@/hooks/use-action"
 import { useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
 import z from "zod"
@@ -29,14 +30,8 @@ export interface CreateGroupFormState {
   }
 }
 
-interface CreateGroupFormProps {
-  createGroupAction(
-    formState: CreateGroupFormState,
-    formData: FormData,
-  ): Promise<CreateGroupFormState>
-}
-
-export function CreateGroupForm({ createGroupAction }: CreateGroupFormProps) {
+export function CreateGroupForm() {
+  const { createGroupAction } = useAction()
   const [formState, action, isPending] = useActionState(createGroupAction, {
     errors: {},
   })

@@ -31,8 +31,7 @@ const routes = {
 
   // GROUP
   createGroup: `${environment.BASE_API_URL}/group`,
-  updateGroup: (groupId: string) =>
-    `${environment.BASE_API_URL}/group/${groupId}`,
+  updateGroup: `${environment.BASE_API_URL}/group`,
   deleteGroup: (groupId: string) =>
     `${environment.BASE_API_URL}/group/${groupId}`,
 

@@ -9,6 +9,7 @@ import {
   FieldSet,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useAction } from "@/hooks/use-action"
 import { Check } from "lucide-react"
 import { useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -25,16 +26,10 @@ export interface UpdateGroupFormState {
 
 interface UpdateGroupFormProps {
   groupName: string
-  updateGroupAction(
-    formState: UpdateGroupFormState,
-    formData: FormData,
-  ): Promise<UpdateGroupFormState>
 }
 
-export function UpdateGroupForm({
-  groupName,
-  updateGroupAction,
-}: UpdateGroupFormProps) {
+export function UpdateGroupForm({ groupName }: UpdateGroupFormProps) {
+  const { updateGroupAction } = useAction()
   const [formState, action, isPending] = useActionState(updateGroupAction, {
     errors: {},
   })
