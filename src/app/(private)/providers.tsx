@@ -1,4 +1,5 @@
 import { createGroupAction, updateGroupAction } from "@/actions/group"
+import { batchUpdateTransactionsAction } from "@/actions/transaction"
 import { AppSidebar } from "@/components/layout/AppSidebar"
 import { Separator } from "@/components/ui/separator"
 import {
@@ -24,6 +25,7 @@ export async function Providers({ children }: { children: React.ReactNode }) {
       actions={{
         updateGroupAction,
         createGroupAction,
+        batchUpdateTransactionsAction: batchUpdateTransactionsAction,
       }}
     >
       <SidebarProvider

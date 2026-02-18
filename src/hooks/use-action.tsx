@@ -1,12 +1,14 @@
 "use client"
 
 import type { createGroupAction, updateGroupAction } from "@/actions/group"
+import type { batchUpdateTransactionsAction } from "@/actions/transaction"
 import type React from "react"
 import { createContext, useContext } from "react"
 
 type Actions = {
   updateGroupAction: typeof updateGroupAction
   createGroupAction: typeof createGroupAction
+  batchUpdateTransactionsAction: typeof batchUpdateTransactionsAction
 }
 
 const ActionsContext = createContext<Actions | null>(null)

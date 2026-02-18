@@ -38,7 +38,7 @@ export default async function Transactions(props: {
 }) {
   const searchParams = await props.searchParams
   const url = buildTransactionsUrl("/transactions", searchParams)
-  const { data } = await getTransactions(url)
+  const transactions = await getTransactions(url)
 
   return (
     <Page>
@@ -53,7 +53,7 @@ export default async function Transactions(props: {
         </Link>
       </header>
       <TransactionsFilters />
-      <TransactionsTable columns={columns} data={data} />
+      <TransactionsTable columns={columns} data={transactions} />
     </Page>
   )
 }

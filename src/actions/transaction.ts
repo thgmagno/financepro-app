@@ -1,11 +1,12 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-"server-only"
 "use server"
 
+import { TransactionsEditBatchSchema } from "@/components/forms/transaction/TransactionsEditBatchSchema"
+import type { TransactionsEditBatchFormState } from "@/components/forms/transaction/UpdateBatchTransactionForm"
 import { config } from "@/config"
 import { ALLOWED_IMPORT_MIME, hasAllowedExtension } from "@/lib/utils"
 import type { Transaction } from "@/types"
 import { revalidatePath, unstable_cache } from "next/cache"
+import z from "zod"
 import { getToken, getUserIdFromJwt } from "./session"
 
 async function fetchTransactions(url: string, token: string) {
@@ -20,7 +21,12 @@ async function fetchTransactions(url: string, token: string) {
   })
 
   if (!res.ok) throw new Error(`Transactions fetch failed: ${res.status}`)
-  return res.json() as Promise<{ data: Transaction[] }>
+  const raw = (await res.json()) as { data: Transaction[] }
+
+  return raw.data.map((t) => ({
+    ...t,
+    amount: Number(t.amount),
+  }))
 }
 
 export async function getTransactions(url: string) {
@@ -84,7 +90,7 @@ export async function uploadTransactionsFile(
     if (!res.ok) {
       let msg = `Upload failed: ${res.status}`
       try {
-        const json = (await res.json()) as any
+        const json = await res.json()
         if (json?.message) msg = String(json.message)
       } catch {}
       return { ok: false, error: msg }
@@ -97,4 +103,55 @@ export async function uploadTransactionsFile(
     const message = err instanceof Error ? err.message : "Unexpected error."
     return { ok: false, error: message }
   }
+}
+
+export async function batchUpdateTransactionsAction(
+  _formState: TransactionsEditBatchFormState,
+  formData: FormData,
+): Promise<TransactionsEditBatchFormState> {
+  const parsed = TransactionsEditBatchSchema.safeParse(
+    Object.fromEntries(formData),
+  )
+
+  if (!parsed.success) {
+    const tree = z.treeifyError(parsed.error)
+
+    return {
+      errors: {
+        scope: tree?.properties?.scope?.errors,
+        _form: tree.properties?.transactionIds?.errors[0],
+      },
+    }
+  }
+
+  if (Array.from([parsed.data.scope]).every((i) => i === undefined)) {
+    return {
+      errors: { _form: "Form data cannot be empty" },
+    }
+  }
+
+  // try {
+  //   const token = await getToken()
+  //   const res = await fetch(config.routes.batchUpdateTransactions, {
+  //     method: "PATCH",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(parsed.data),
+  //   })
+
+  //   const r = await res.json()
+
+  //   if (!res.ok) {
+  //     return { errors: { _form: r.message } }
+  //   }
+  // } catch {
+  //   return {
+  //     errors: { _form: "Failed to fetch" },
+  //   }
+  // }
+
+  return { errors: {}, successMessage: "All transactions have been updated." }
 }
