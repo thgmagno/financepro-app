@@ -130,28 +130,28 @@ export async function batchUpdateTransactionsAction(
     }
   }
 
-  // try {
-  //   const token = await getToken()
-  //   const res = await fetch(config.routes.batchUpdateTransactions, {
-  //     method: "PATCH",
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(parsed.data),
-  //   })
+  try {
+    const token = await getToken()
+    const res = await fetch(config.routes.batchUpdateTransactions, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(parsed.data),
+    })
 
-  //   const r = await res.json()
+    const r = await res.json()
 
-  //   if (!res.ok) {
-  //     return { errors: { _form: r.message } }
-  //   }
-  // } catch {
-  //   return {
-  //     errors: { _form: "Failed to fetch" },
-  //   }
-  // }
+    if (!res.ok) {
+      return { errors: { _form: r.message } }
+    }
+  } catch {
+    return {
+      errors: { _form: "Failed to fetch" },
+    }
+  }
 
   return { errors: {}, successMessage: "All transactions have been updated." }
 }
