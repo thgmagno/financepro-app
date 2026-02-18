@@ -1,5 +1,5 @@
 import type { Transaction } from "@/types"
-import { ArrowDownLeft, ArrowUpRight, CalendarDays, Hash } from "lucide-react"
+import { ArrowDown, ArrowUp, CalendarDays, Hash } from "lucide-react"
 
 export function QuickStats({ transactions }: { transactions: Transaction[] }) {
   const totalTransactions = transactions.length
@@ -19,12 +19,12 @@ export function QuickStats({ transactions }: { transactions: Transaction[] }) {
     {
       label: "Income",
       value: incomeCount,
-      icon: ArrowDownLeft,
+      icon: ArrowDown,
     },
     {
       label: "Outcome",
       value: outcomeCount,
-      icon: ArrowUpRight,
+      icon: ArrowUp,
     },
     {
       label: "Days",
