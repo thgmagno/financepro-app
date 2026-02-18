@@ -25,7 +25,7 @@ export async function Providers({ children }: { children: React.ReactNode }) {
       actions={{
         updateGroupAction,
         createGroupAction,
-        batchUpdateTransactionsAction: batchUpdateTransactionsAction,
+        batchUpdateTransactionsAction,
       }}
     >
       <SidebarProvider
