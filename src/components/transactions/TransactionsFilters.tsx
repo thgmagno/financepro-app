@@ -140,7 +140,7 @@ export function TransactionsFilters() {
                     variant="secondary"
                     title={activeChips.slice(3).join("\n")}
                   >
-                    +{activeChips.length - 4} more
+                    +{activeChips.length - 3} more
                   </Badge>
                 )}
               </div>
