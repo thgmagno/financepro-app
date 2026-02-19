@@ -1,3 +1,4 @@
+import { setAccessToken } from "@/actions/session"
 import {
   SignUpForm,
   type SignUpFormState,
@@ -6,7 +7,6 @@ import { SignUpSchema } from "@/components/forms/auth/SignUpSchema"
 import { Page } from "@/components/layout/Page"
 import { Suspense } from "@/components/layout/Suspense"
 import { config } from "@/config"
-import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import z from "zod"
 
@@ -55,8 +55,7 @@ async function signUpAction(
     }
 
     if (r.data?.accessToken) {
-      const cookieStore = await cookies()
-      cookieStore.set(config.accessTokenName, r.data.accessToken)
+      await setAccessToken(r.data.accessToken)
     }
   } catch {
     return {

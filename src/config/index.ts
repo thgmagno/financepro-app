@@ -52,5 +52,6 @@ export const config = {
   routes,
   publicRoutes,
   accessTokenName: "finance-pro-access-token",
+  domain: ".app-finance-pro.com.br",
   sidebarStateTokenName: "finance-pro-sidebar-state",
 }
