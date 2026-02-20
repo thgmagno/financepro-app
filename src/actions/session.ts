@@ -10,8 +10,19 @@ export async function getToken() {
 }
 
 export async function endSession() {
-  const cookiesStore = await cookies()
-  cookiesStore.delete(config.accessTokenName)
+  const store = await cookies()
+
+  store.set({
+    name: config.accessTokenName,
+    value: "",
+    path: "/",
+    domain: process.env.NODE_ENV === "production" ? config.domain : undefined,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 0,
+  })
+
   redirect(config.publicRoutes.signIn)
 }
 
